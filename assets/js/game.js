@@ -16,18 +16,28 @@ tds_arr.forEach((td) => {
     });
 });
 
+// Third code
+function debounce(func, timeout = 200){
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
+
 function playerMark(td) {
     [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
     const column = parseInt(column_s);
     if (data_game[line][column] === 0)
     {
-        data_game[line][column] = 1;
+        data_game[line][column] = PLAYER;
         const x_div = td.getElementsByClassName('mark_x')[0];
-        console.log(x_div);
-        // x_div.style.display = 'block';
+        x_div.style.display = 'block';
     }
-    checkEndGame()
+    // immediately-invoked-function-expression
+     // const checkedEndGame = debounce(() => checkEndGame());
+    debounce(() => checkEndGame())();
     // call machine player
 }
 
@@ -48,18 +58,18 @@ function resetGame() {
 
 function checkWin(p) {
     for (let i = 0; i < 3; i++) {
-        // line check
-        if (data_game[i][3-1] === p && 
-            data_game[i][3-2] === p &&
-            data_game[i][3-3] === p) 
-            return true;
-        // column check
-        if (data_game[i][3-1] === p && 
-            data_game[i][3-2] === p &&
-            data_game[i][3-3] === p) 
+        if (data_game[i][3 - 1] === p && 
+            data_game[i][3 - 2] === p &&
+            data_game[i][3 - 3] === p) 
             return true;
     }
-    
+    for (let i = 0; i < 3; i++) {
+        if (data_game[0][i] === p && 
+            data_game[1][i] === p &&
+            data_game[2][i] === p) 
+            return true;
+    }
+
     if (data_game[0][0] === p &&
         data_game[1][1] === p &&
         data_game[2][2] === p)
@@ -85,10 +95,10 @@ function checkTie() {
 
 function checkEndGame() {
     if (checkWin(PLAYER))
-        return alert('Você ganhou 😎');
+        alert('Você ganhou 😎');
     if (checkWin(MACHINE))
-        return alert('Você perdeu 😒');
+        alert('Você perdeu 😒');
     if (!checkTie())
-        return alert("Deu empate 🤣"); 
+        alert("Deu empate 🤣"); 
     return;
 }
