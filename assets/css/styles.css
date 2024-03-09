@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    font-family: sans-serif;
+}
+
+.container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.header {
+    text-align: center;
+    padding: 0.8 rem;
+    margin-bottom: 2rem;
+}
+
+.game {
+    margin-bottom: 2rem;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+tr:nth-child(2) {
+    border-top: 10px solid #14bdac;
+    border-bottom: 10px solid #14bdac;
+}
+
+td {
+    height: 90px;
+    width: 90px;
+    cursor: pointer;
+}
+
+.td_border_right {
+    border-right: 10px solid #14bdac;
+}
+
+.mark_x {
+    display: none;
+    height: 100%;
+    background-image: url('../img/x.svg');
+    background-position: center center; 
+    background-repeat: no-repeat;
+}
+
+.mark_o {
+    display: block;
+    height: 100%;
+    background-image: url('../img/o.svg');
+    background-position: center center; 
+    background-repeat: no-repeat;
+}
+
+.footer {
+    text-align: center;
+    padding: 0.8 rem;
+}
+
+.restart {
+    font-size: 1.8rem;
+    padding: 1rem;
+    
+}
+
+.restart:hover {
+    color: #fff;
+    background-color: #14bdac;
+    cursor: pointer;
+}
