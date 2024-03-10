@@ -57,7 +57,7 @@ td {
 }
 
 .mark_o {
-    display: block;
+    display: none;
     height: 100%;
     background-image: url('../img/o.svg');
     background-position: center center; 

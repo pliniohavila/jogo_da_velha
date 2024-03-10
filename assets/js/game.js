@@ -16,29 +16,52 @@ tds_arr.forEach((td) => {
     });
 });
 
-// Third code
-function debounce(func, timeout = 200){
-    let timer;
-    return (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => { func.apply(this, args); }, timeout);
-    };
-}
-
 function playerMark(td) {
-    [line_s, column_s] = td.id.split('');
+    const [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
     const column = parseInt(column_s);
     if (data_game[line][column] === 0)
     {
         data_game[line][column] = PLAYER;
-        const x_div = td.getElementsByClassName('mark_x')[0];
+        const x_div = td.querySelector('.mark_x');
         x_div.style.display = 'block';
     }
-    // immediately-invoked-function-expression
-     // const checkedEndGame = debounce(() => checkEndGame());
-    debounce(() => checkEndGame())();
-    // call machine player
+    setTimeout(() => { 
+        if (checkEndGame())
+            return;
+        machineMark();
+     }, 300);
+}
+
+function getRandom() {
+    return Math.floor(Math.random() * 3);
+}
+
+function machineMark() {
+    let line = getRandom();
+    let column = getRandom();
+    let flag = true;
+    while (flag)
+    {
+        if (data_game[line][column] === 0)
+        {
+            data_game[line][column] = MACHINE;
+            const id_div = `${line}${column}`
+            const td = document.getElementById(id_div);
+            const o_div = td.querySelector('.mark_o');
+            o_div.style.display = 'block';
+            flag = false;
+        }
+        // To avoid infinite interactions in the event of a tie
+        if (checkTie())
+            flag = false;
+        line = getRandom();
+        column = getRandom();
+    }
+    setTimeout(() => { 
+        if (checkEndGame())
+            return;
+     }, 300);
 }
 
 function resetDataGame() {
@@ -50,10 +73,17 @@ function resetDataGame() {
 
 function resetGame() {
     const all_mark_x = Array.from(document.getElementsByClassName('mark_x'));
+    const all_mark_o = Array.from(document.getElementsByClassName('mark_o'));
     all_mark_x.forEach((mark_x) => {
         mark_x.style.display = "none";
-    });       
+    });    
+    all_mark_o.forEach((mark_o) => {
+        mark_o.style.display = "none";
+    });     
     resetDataGame(); 
+    const randomPlayerStart = getRandom() % 3;
+    if (randomPlayerStart === MACHINE)
+        machineMark(); 
 }
 
 function checkWin(p) {
@@ -84,21 +114,29 @@ function checkWin(p) {
 }
 
 function checkTie() {
-    data_game.forEach((line) => {
-        for (let i in line) {
-            if (line[i] === 0)
+    for (let i = 0; i < 3; i++) {
+        for (let k = 0; k < 3; k++)
+        {
+            if (data_game[i][k] === 0)
                 return false;
         }
-    });
+    }
     return true;
 }
 
 function checkEndGame() {
-    if (checkWin(PLAYER))
+    if (checkWin(PLAYER)) {
         alert('Você ganhou 😎');
-    if (checkWin(MACHINE))
+        return true;
+    }
+    if (checkWin(MACHINE)) {
         alert('Você perdeu 😒');
-    if (!checkTie())
-        alert("Deu empate 🤣"); 
-    return;
+        return true;
+    }
+        
+    if (checkTie()) {
+        alert("Deu empate 🤣");
+        return true;
+    } 
+    return false;
 }
