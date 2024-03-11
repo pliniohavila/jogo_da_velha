@@ -51,7 +51,7 @@ td {
 .mark_x {
     display: none;
     height: 100%;
-    background-image: url('../img/x.svg');
+    background-image: url('../img/x.png');
     background-position: center center; 
     background-repeat: no-repeat;
 }
@@ -59,9 +59,15 @@ td {
 .mark_o {
     display: none;
     height: 100%;
-    background-image: url('../img/o.svg');
+    background-image: url('../img/o.png');
     background-position: center center; 
     background-repeat: no-repeat;
+}
+
+td.highlight {
+    background-color: #1beed9;
+    opacity: 1;
+    transition: all 0.5s ease;
 }
 
 .footer {
