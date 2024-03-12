@@ -44,29 +44,71 @@ function add_event_listener() {
     });
 }
 
-function startGame() {
-    // const modal = document.getElementById("options");
-    // modal.style.display = 'none';
-    add_event_listener();
+// startGame();
 
-    PLAYER_1 = new Player('Santiago', 'x');
-    PLAYER_2 = new Player('Peralta', 'o');
+function getInfoPlayers() {
+    const inputs = document.querySelectorAll(".modal-body .infos-input");
+    const select = document.querySelector(".modal-body select");
+   
+    const values = {};
+    for (const input of inputs) {
+      values[input.name] = input.value;
+    }
+
+    values.player1Symbol = select.value;
+    values.player2Symbol = values.player1Symbol === 'x' ? 'o' : 'x';
+   
+    return values;
+}
+
+function startGame() {
+    add_event_listener();
+    console.log(getInfoPlayers());
+    const modal = document.getElementById("options");
+    modal.style.display = 'none';
+    
+    const players = getInfoPlayers();
+    PLAYER_1 = new Player(players.player1, players.player1Symbol);
+    if (players.player2.length === 0) {
+        PLAYER_2 = new Player('Baymax', players.player2Symbol);
+    } else {
+        PLAYER_2 = new Player(players.player1, players.player2Symbol);
+        MACHINE = 0;
+    }
+    console.log(PLAYER_1);
+    console.log(PLAYER_2);
 
     getById('placar-player1-name').innerText = PLAYER_1.name;
     getById('placar-player2-name').innerText = PLAYER_2.name;
-    
-    updatePlacar();
 
-    ACTUAL_PLAYER = PLAYER_1
+    const randomPlayerStart = getRandom() % 3;
+    if (randomPlayerStart === 1) {
+        ACTUAL_PLAYER = PLAYER_1;
+    } else {
+        if (MACHINE === 1) 
+            machineMark(); 
+        else 
+            ACTUAL_PLAYER = PLAYER_2;
+    }     
+    updatePlacar();
+    if (MACHINE === 0) {
+        console.log(getById('actual-player'));
+        getById('actual-player').style.display = 'block';
+        updateActualPlayerShow();
+    }   
 }
 
-startGame()
+function updateActualPlayerShow() {
+    console.log('ACTUAL_PLAYER[updateActualPlayerShow()]', ACTUAL_PLAYER);
+    getById('actual-player-content').innerText = ACTUAL_PLAYER.name;
+}
 
 function blockMouse(event) {
     event.preventDefault();
   }
 
 function playerMark(td) {
+    console.log('ACTUAL_PLAYER', ACTUAL_PLAYER);
     const [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
     const column = parseInt(column_s);
@@ -79,10 +121,14 @@ function playerMark(td) {
     setTimeout(() => { 
         if (checkEndGame())
             return;
-        if (MACHINE === 1)
+        if (MACHINE === 1) {
             machineMark();
-        else 
+        }
+        else {
             ACTUAL_PLAYER = ACTUAL_PLAYER === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+            updateActualPlayerShow();
+        } 
+            
     }, 300);
 }
 
