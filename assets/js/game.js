@@ -4,8 +4,34 @@ const data_game = [
     [0, 0 , 0],
 ];
 
-const PLAYER_1   = 1;
-const PLAYER_2   = 2;
+const PLACAR = {
+    player1: 0,
+    player2: 0,
+    tie: 0
+}
+
+const symbols = {
+    'x': {
+        symbolId: 1,
+        symbolIcon: '.mark_x',
+    }, 
+    'o': {
+        symbolId: 2,
+        symbolIcon: '.mark_o',
+    }
+}
+
+class Player {
+    constructor(name, symbol) {
+        this.name = name;
+        this.symbol = symbols[symbol];
+    }
+}
+
+let PLAYER_1;
+let PLAYER_2;
+let ACTUAL_PLAYER;
+let MACHINE = 1;
 
 const tds = document.getElementsByTagName('td');
 const tds_arr = Array.from(tds);
@@ -18,19 +44,27 @@ function add_event_listener() {
     });
 }
 
-function remove_event_listener() {
-    document.addEventListener("click", function(e){
-        e.preventDefault();
-    }, false);
-    // console.log('event');
-    // tds_arr.forEach((td) => {
-    //     td.removeEventListener('click', () => {
-    //         playerMark(td);
-    //     }, true);
-    // });
+function startGame() {
+    // const modal = document.getElementById("options");
+    // modal.style.display = 'none';
+    add_event_listener();
+
+    PLAYER_1 = new Player('Santiago', 'x');
+    PLAYER_2 = new Player('Peralta', 'o');
+
+    getById('placar-player1-name').innerText = PLAYER_1.name;
+    getById('placar-player2-name').innerText = PLAYER_2.name;
+    
+    updatePlacar();
+
+    ACTUAL_PLAYER = PLAYER_1
 }
 
-add_event_listener();
+startGame()
+
+function blockMouse(event) {
+    event.preventDefault();
+  }
 
 function playerMark(td) {
     const [line_s, column_s] = td.id.split('');
@@ -38,16 +72,18 @@ function playerMark(td) {
     const column = parseInt(column_s);
     if (data_game[line][column] === 0)
     {
-        data_game[line][column] = PLAYER_1;
-        const x_div = td.querySelector('.mark_x');
+        data_game[line][column] = ACTUAL_PLAYER.symbol.symbolId;
+        const x_div = td.querySelector(ACTUAL_PLAYER.symbol.symbolIcon);
         x_div.style.display = 'block';
     }
-    remove_event_listener();
     setTimeout(() => { 
         if (checkEndGame())
             return;
-        machineMark();
-     }, 300);
+        if (MACHINE === 1)
+            machineMark();
+        else 
+            ACTUAL_PLAYER = ACTUAL_PLAYER === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+    }, 300);
 }
 
 function getRandom() {
@@ -62,10 +98,10 @@ function machineMark() {
     {
         if (data_game[line][column] === 0)
         {
-            data_game[line][column] = PLAYER_2;
+            data_game[line][column] = PLAYER_2.symbol.symbolId;
             const id_div = `${line}${column}`
-            const td = document.getElementById(id_div);
-            const o_div = td.querySelector('.mark_o');
+            const td = getById(id_div);
+            const o_div = td.querySelector(PLAYER_2.symbol.symbolIcon);
             o_div.style.display = 'block';
             flag = false;
         }
@@ -163,26 +199,32 @@ function checkTie() {
 }
 
 function checkEndGame() {
-    let checkedWin = checkWin(PLAYER_1); 
+    let checkedWin = checkWin(PLAYER_1.symbol.symbolId); 
 
     if (checkedWin.won) {
         highlight(checkedWin.index);
+        PLACAR.player1++;
+        updatePlacar();
         setTimeout(() => {
-            alert('Você ganhou 😎');
+            alert(`A pessoa jogadora ${PLAYER_1.name} ganhou 😎`);
         }, 200);
         return true;
     }
 
-    checkedWin = checkWin(PLAYER_2); 
+    checkedWin = checkWin(PLAYER_2.symbol.symbolId); 
     if (checkedWin.won) {
         highlight(checkedWin.index);
+        PLACAR.player2++;
+        updatePlacar();
         setTimeout(() => {
-            alert('Você perdeu 😒');
+            alert(`A pessoa jogadora ${PLAYER_2.name} ganhou 😎`);
         }, 200);
         return true;
     }
         
     if (checkTie()) {
+        PLACAR.tie++;
+        updatePlacar();
         alert("Deu empate 🤣");
         return true;
     } 
@@ -190,13 +232,14 @@ function checkEndGame() {
 }
 
 function highlight(index) {
+    console.log(index);
     const q0 = index[0].join('');
     const q1 = index[1].join('');
     const q2 = index[2].join('');
 
-    document.getElementById(q0).classList.add('highlight');
-    document.getElementById(q1).classList.add('highlight');
-    document.getElementById(q2).classList.add('highlight');
+    getById(q0).classList.add('highlight');
+    getById(q1).classList.add('highlight');
+    getById(q2).classList.add('highlight');
 }
 
 function remove_highlight() {
@@ -204,4 +247,24 @@ function remove_highlight() {
         if (td.classList.contains('highlight'))
             td.classList.remove('highlight');
     }
+}
+
+function showInputPlayer2() {
+    const divInputPlayer2 = getById('input-player2');
+    const divInputPlayer2ClassList = divInputPlayer2.classList;
+    if (divInputPlayer2ClassList.contains('infos-group-hidden'))
+        divInputPlayer2.classList.remove('infos-group-hidden');
+    else 
+        divInputPlayer2.classList.add('infos-group-hidden');
+}
+
+function updatePlacar() {
+    getById('placar-player1-points').innerText = PLACAR.player1;
+    getById('placar-player2-points').innerText = PLACAR.player2;
+    getById('placar-tie').innerText = PLACAR.tie;
+}
+
+
+function getById(strId) {
+    return document.getElementById(strId);
 }

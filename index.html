@@ -16,52 +16,118 @@
     <div class="game">
         <table>
             <tr>
-                <td class="td_border_right" id="00">
+                <td class="td_border_right td-game" id="00">
                     <div class="mark_x"></div>
                     <div class="mark_o"></div>
                 </td>
-                <td class="td_border_right" id="01">
+                <td class="td_border_right td-game" id="01">
                     <div class="mark_x"></div>
                     <div class="mark_o"></div>
                 </td>
-                <td id="02">
+                <td class="td-game" id="02">
+                    <div class="mark_x"></div>
+                    <div class="mark_o"></div>
+                </td>
+            </tr>
+            <tr class="tr-middle">
+                <td class="td_border_right td-game" id="10">
+                    <div class="mark_x"></div>
+                    <div class="mark_o"></div>
+                </td>
+                <td class="td_border_right td-game" id="11">
+                    <div class="mark_x"></div>
+                    <div class="mark_o"></div>
+                </td>
+                <td class="td-game" id="12">
                     <div class="mark_x"></div>
                     <div class="mark_o"></div>
                 </td>
             </tr>
             <tr>
-                <td class="td_border_right" id="10">
+                <td class="td_border_right td-game" id="20">
                     <div class="mark_x"></div>
                     <div class="mark_o"></div>
                 </td>
-                <td class="td_border_right" id="11">
-                    <div class="mark_x"></div>
-                    <div class="mark_o"></div>
-                </td>
-                <td id="12">
-                    <div class="mark_x"></div>
-                    <div class="mark_o"></div>
-                </td>
-            </tr>
-            <tr>
-                <td class="td_border_right" id="20">
-                    <div class="mark_x"></div>
-                    <div class="mark_o"></div>
-                </td>
-                <td class="td_border_right" id="21">
+                <td class="td_border_right td-game" id="21">
                     <div class="mark_x"></div>
                     <div class="mark_o"></div>  
                 </td>
-                <td id="22">
+                <td class="td-game" id="22">
                     <div class="mark_x"></div>
                     <div class="mark_o"></div>
                 </td>
             </tr>
         </table>
+        <div class="placar">
+            <div>
+                <h3 class="placar-title">Placar</h3>
+            </div>
+            <table class="placar-table">
+                <thead>
+                    <tr>
+                        <th>Jogador</th>
+                        <th>Pontuação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="placar-player1-name"></td>
+                        <td id="placar-player1-points"></td>
+                    </tr>
+                    <tr>
+                        <td id="placar-player2-name"></td>
+                        <td id="placar-player2-points"></th>
+                    </tr>
+                    <tr>
+                        <td>Empates</td>
+                        <td id="placar-tie"></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="footer">
         <button id="retart" class="restart" onclick="resetGame()">
-            Reiniciar Jogo
+            Reiniciar Partida
+        </button>
+    </div>
+</div>
+
+<div id="options" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+        <!-- <span class="close">&times;</span> -->
+            <h2>Opções de Jogo</h2>
+        </div>
+    <div class="modal-body">
+        <div class="infos-group">
+            <label for="player1">Nome do Jogador 1: </label>
+            <input type="text" name="player1" id="player1" class="infos-input"/>
+        </div>
+        <div class="infos-group">
+            <span>
+                <label for="option-two-players">Dois jogadores?</label>
+                <input type="checkbox" name="option-two-players" id="option-two-players" onchange="showInputPlayer2()">
+            </span>
+        </div>
+        <div class="infos-group infos-group-hidden" id="input-player2">
+            <label for="player2">Nome do Jogador 2: </label>
+            <input type="text" name="player2" id="player2" class="infos-input"/>
+        </div>
+        <div class="infos-group">
+            <label for="player2">O Jogador 1 escolhe qual simbolo?</label>
+            <select name="select">
+                <option value="x">X</option>
+                <option value="o" selected>O</option>
+            </select>
+            <!-- <input type="checkbox" name="x" id="x" />
+            <input type="checkbox" name="o" id="o" /> -->
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button id="start" class="start" onclick="startGame()">
+            Iniciar Jogo
         </button>
     </div>
 </div>

@@ -12,6 +12,10 @@ body {
     font-family: sans-serif;
 }
 
+button {
+    cursor: pointer;
+}
+
 .container {
     position: absolute;
     top: 50%;
@@ -33,12 +37,13 @@ table {
     border-collapse: collapse;
 }
 
-tr:nth-child(2) {
+/* .tr-middle:nth-child(2) { */
+.tr-middle {
     border-top: 10px solid #14bdac;
     border-bottom: 10px solid #14bdac;
 }
 
-td {
+.td-game {
     height: 90px;
     width: 90px;
     cursor: pointer;
@@ -70,6 +75,31 @@ td.highlight {
     transition: all 0.5s ease;
 }
 
+.placar {
+    margin-top: 0.5rem;
+}
+
+.placar-title {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.placar-table {
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+}
+
+.placar-table > thead {
+    columns: #fff;
+    background-color: #1beed9;
+}
+
+.placar-table + tr {
+    padding: 5px;
+    border: 1px solid #1beed9;;
+}
+
 .footer {
     text-align: center;
     padding: 0.8 rem;
@@ -78,11 +108,100 @@ td.highlight {
 .restart {
     font-size: 1.8rem;
     padding: 1rem;
-    
 }
 
 .restart:hover {
     color: #fff;
     background-color: #14bdac;
+}
+
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto;
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    /* width: 50%; */
+    max-width: 30rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.modal-header {
+    padding: 2px 16px;
+    background-color: #14bdac;
+    color: white;
+}
+
+.modal-body {
+    padding: 2px 16px;
+}
+
+.infos-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.3rem;
+    margin-bottom: 5px;
+}
+
+.infos-group-hidden {
+    display: none !important;
+}
+
+.infos-input {
+    line-height: 1.5;
+    color: #495057;
+    padding: 0.3rem;
+    border: 2px solid #000;
+}
+
+.infos-input:active {
+    color: lime;
+}
+
+.infos-group > select {
+    width: 50%;
+}
+
+input[type='text'] {
+    width: 100%;
+}
+
+input[type='checkbox'] {
     cursor: pointer;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+}
+
+.modal-footer {
+    text-align: center;
+    margin-top: 1rem;
+    padding: 5px 16px;
+    background-color: #14bdac;
+    color: white;
+}
+
+.start {
+    font-size: 1.8rem;
+    padding: 0.5rem;
+}
+
+.start:hover {
+    color: #14bdac;
+    background-color: #fefefe;
 }
