@@ -63,7 +63,7 @@ table {
 .mark_x {
     display: none;
     height: 100%;
-    background-image: url('../img/x.png');
+    background-image: url('../img/x.svg');
     background-position: center center; 
     background-repeat: no-repeat;
 }
@@ -71,7 +71,7 @@ table {
 .mark_o {
     display: none;
     height: 100%;
-    background-image: url('../img/o.png');
+    background-image: url('../img/o.svg');
     background-position: center center; 
     background-repeat: no-repeat;
 }

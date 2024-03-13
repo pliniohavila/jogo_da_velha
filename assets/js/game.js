@@ -1,3 +1,5 @@
+// DATA GAME
+
 const data_game = [
     [0, 0 , 0],
     [0, 0 , 0],
@@ -27,43 +29,18 @@ class Player {
         this.symbol = symbols[symbol];
     }
 }
+const tds = document.getElementsByTagName('td');
+const tds_arr = Array.from(tds);
 
 let PLAYER_1;
 let PLAYER_2;
 let ACTUAL_PLAYER;
 let MACHINE = 1;
 
-const tds = document.getElementsByTagName('td');
-const tds_arr = Array.from(tds);
-
-function add_event_listener() {
-    tds_arr.forEach((td) => {
-        td.addEventListener('click', () => {
-            playerMark(td);
-        });
-    });
-}
-
-// startGame();
-
-function getInfoPlayers() {
-    const inputs = document.querySelectorAll(".modal-body .infos-input");
-    const select = document.querySelector(".modal-body select");
-   
-    const values = {};
-    for (const input of inputs) {
-      values[input.name] = input.value;
-    }
-
-    values.player1Symbol = select.value;
-    values.player2Symbol = values.player1Symbol === 'x' ? 'o' : 'x';
-   
-    return values;
-}
+// HANDLERS
 
 function startGame() {
     add_event_listener();
-    console.log(getInfoPlayers());
     const modal = document.getElementById("options");
     modal.style.display = 'none';
     
@@ -72,11 +49,9 @@ function startGame() {
     if (players.player2.length === 0) {
         PLAYER_2 = new Player('Baymax', players.player2Symbol);
     } else {
-        PLAYER_2 = new Player(players.player1, players.player2Symbol);
+        PLAYER_2 = new Player(players.player2, players.player2Symbol);
         MACHINE = 0;
     }
-    console.log(PLAYER_1);
-    console.log(PLAYER_2);
 
     getById('placar-player1-name').innerText = PLAYER_1.name;
     getById('placar-player2-name').innerText = PLAYER_2.name;
@@ -85,10 +60,13 @@ function startGame() {
     if (randomPlayerStart === 1) {
         ACTUAL_PLAYER = PLAYER_1;
     } else {
-        if (MACHINE === 1) 
+        if (MACHINE === 1) {
+            ACTUAL_PLAYER = PLAYER_1;
             machineMark(); 
-        else 
+        }
+        else {
             ACTUAL_PLAYER = PLAYER_2;
+        } 
     }     
     updatePlacar();
     if (MACHINE === 0) {
@@ -100,12 +78,8 @@ function startGame() {
 
 function updateActualPlayerShow() {
     console.log('ACTUAL_PLAYER[updateActualPlayerShow()]', ACTUAL_PLAYER);
-    getById('actual-player-content').innerText = ACTUAL_PLAYER.name;
+    getById('actual-player-content').innerText = `Agora é a vez de ${ACTUAL_PLAYER.name}`;
 }
-
-function blockMouse(event) {
-    event.preventDefault();
-  }
 
 function playerMark(td) {
     console.log('ACTUAL_PLAYER', ACTUAL_PLAYER);
@@ -122,6 +96,7 @@ function playerMark(td) {
         if (checkEndGame())
             return;
         if (MACHINE === 1) {
+            // suspenseClick()
             machineMark();
         }
         else {
@@ -130,10 +105,6 @@ function playerMark(td) {
         } 
             
     }, 300);
-}
-
-function getRandom() {
-    return Math.floor(Math.random() * 3);
 }
 
 function machineMark() {
@@ -163,13 +134,6 @@ function machineMark() {
      }, 300);
 }
 
-function resetDataGame() {
-    data_game.forEach((line) => {
-        for (let i in line)
-            line[i] = 0;
-    });
-}
-
 function resetGame() {
     const all_mark_x = Array.from(document.getElementsByClassName('mark_x'));
     const all_mark_o = Array.from(document.getElementsByClassName('mark_o'));
@@ -184,64 +148,6 @@ function resetGame() {
     const randomPlayerStart = getRandom() % 3;
     if (randomPlayerStart === PLAYER_2)
         machineMark(); 
-}
-
-function checkWin(p) {
-    let checkedWin = {
-        won: false,
-        index: []
-    };
-
-    for (let i = 0; i < 3; i++) {
-        if (data_game[i][3 - 1] === p && 
-            data_game[i][3 - 2] === p &&
-            data_game[i][3 - 3] === p) {
-                checkedWin = {
-                    won: true, 
-                    index: [[i, 3-1], [i, 3-2], [i, 3-3]]
-                };
-            }
-    }
-    for (let i = 0; i < 3; i++) {
-        if (data_game[0][i] === p && 
-            data_game[1][i] === p &&
-            data_game[2][i] === p) {
-                checkedWin = {
-                    won: true, 
-                    index: [[0, i], [1, i], [2, 2]]
-                };
-            }
-    }
-
-    if (data_game[0][0] === p &&
-        data_game[1][1] === p &&
-        data_game[2][2] === p) {
-            checkedWin  = {
-                won: true, 
-                index: [[0, 0], [1, 1], [2, 2]]
-            };
-        }
-
-    if (data_game[0][2] === p &&
-        data_game[1][1] === p &&
-        data_game[2][0] === p) {
-            checkedWin  = {
-                won: true, 
-                index: [[0, 2], [1, 1], [2, 0]]
-            };
-        }
-    return checkedWin;
-}
-
-function checkTie() {
-    for (let i = 0; i < 3; i++) {
-        for (let k = 0; k < 3; k++)
-        {
-            if (data_game[i][k] === 0)
-                return false;
-        }
-    }
-    return true;
 }
 
 function checkEndGame() {
@@ -263,7 +169,10 @@ function checkEndGame() {
         PLACAR.player2++;
         updatePlacar();
         setTimeout(() => {
-            alert(`A pessoa jogadora ${PLAYER_2.name} ganhou 😎`);
+            if (MACHINE == 1)
+                alert(`Você perdeu 😒`);
+            else 
+                alert(`A pessoa jogadora ${PLAYER_2.name} ganhou 😎`);
         }, 200);
         return true;
     }
@@ -310,6 +219,110 @@ function updatePlacar() {
     getById('placar-tie').innerText = PLACAR.tie;
 }
 
+// HELPERS 
+
+function suspenseClick() {
+    document.body.addEventListener("click", (event) => {
+      event.preventDefault();
+      setTimeout(() => {
+        document.body.removeEventListener("click", suspenseClick);
+      }, 1000);
+    });
+  }
+
+function checkWin(p) {
+    let checkedWin = {
+        won: false,
+        index: []
+    };
+
+    for (let i = 0; i < 3; i++) {
+        if (data_game[i][3 - 1] === p && 
+            data_game[i][3 - 2] === p &&
+            data_game[i][3 - 3] === p) {
+                checkedWin = {
+                    won: true, 
+                    index: [[i, 3-1], [i, 3-2], [i, 3-3]]
+                };
+            }
+    }
+    for (let i = 0; i < 3; i++) {
+        if (data_game[0][i] === p && 
+            data_game[1][i] === p &&
+            data_game[2][i] === p) {
+                checkedWin = {
+                    won: true, 
+                    index: [[0, i], [1, i], [2, i]]
+                };
+            }
+    }
+
+    if (data_game[0][0] === p &&
+        data_game[1][1] === p &&
+        data_game[2][2] === p) {
+            checkedWin  = {
+                won: true, 
+                index: [[0, 0], [1, 1], [2, 2]]
+            };
+        }
+
+    if (data_game[0][2] === p &&
+        data_game[1][1] === p &&
+        data_game[2][0] === p) {
+            checkedWin  = {
+                won: true, 
+                index: [[0, 2], [1, 1], [2, 0]]
+            };
+        }
+    return checkedWin;
+}
+
+function checkTie() {
+    for (let i = 0; i < 3; i++) {
+        for (let k = 0; k < 3; k++)
+        {
+            if (data_game[i][k] === 0)
+                return false;
+        }
+    }
+    return true;
+}
+
+function getRandom() {
+    return Math.floor(Math.random() * 3);
+}
+
+function add_event_listener() {
+    tds_arr.forEach((td) => {
+        td.addEventListener('click', () => {
+            playerMark(td);
+        });
+    });
+}
+
+function getInfoPlayers() {
+    const inputs = document.querySelectorAll(".modal-body .infos-input");
+    const select = document.querySelector(".modal-body select");
+   
+    const values = {};
+    for (const input of inputs) {
+      values[input.name] = input.value;
+    }
+
+    values.player1Symbol = select.value;
+    values.player2Symbol = values.player1Symbol === 'x' ? 'o' : 'x';
+   
+    return values;
+}
+
+function resetDataGame() {
+    data_game.forEach((line) => {
+        for (let i in line)
+            line[i] = 0;
+    });
+}
+
+// WRAPPERS 
 
 function getById(strId) {
     return document.getElementById(strId);
