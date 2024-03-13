@@ -70,19 +70,16 @@ function startGame() {
     }     
     updatePlacar();
     if (MACHINE === 0) {
-        console.log(getById('actual-player'));
         getById('actual-player').style.display = 'block';
         updateActualPlayerShow();
     }   
 }
 
 function updateActualPlayerShow() {
-    console.log('ACTUAL_PLAYER[updateActualPlayerShow()]', ACTUAL_PLAYER);
     getById('actual-player-content').innerText = `Agora é a vez de ${ACTUAL_PLAYER.name}`;
 }
 
 function playerMark(td) {
-    console.log('ACTUAL_PLAYER', ACTUAL_PLAYER);
     const [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
     const column = parseInt(column_s);
@@ -96,7 +93,6 @@ function playerMark(td) {
         if (checkEndGame())
             return;
         if (MACHINE === 1) {
-            // suspenseClick()
             machineMark();
         }
         else {
@@ -187,7 +183,6 @@ function checkEndGame() {
 }
 
 function highlight(index) {
-    console.log(index);
     const q0 = index[0].join('');
     const q1 = index[1].join('');
     const q2 = index[2].join('');
@@ -220,16 +215,6 @@ function updatePlacar() {
 }
 
 // HELPERS 
-
-function suspenseClick() {
-    document.body.addEventListener("click", (event) => {
-      event.preventDefault();
-      setTimeout(() => {
-        document.body.removeEventListener("click", suspenseClick);
-      }, 1000);
-    });
-  }
-
 function checkWin(p) {
     let checkedWin = {
         won: false,
