@@ -25,4 +25,27 @@ https://sweetalert2.github.io
 [ ] Ranking dos jogadores
     Deve constar:
         nome do jogador, data da última partida, Quantidade de vitórias, empates e derrotas 
-        Ordenado, por vitória, Empates 2pts, Derrota 0pts
+        Ordenado, por vitória: 3pts, Empates 2pts, Derrota 0pts
+
+TIC-TAC-TOE [
+    Player: {
+        name: 
+        wins: 
+        losses:
+        ties:
+        lastTimePleyed: timestamp
+    }, 
+]
+
+Toda vez que um novo é iniciado, recupera os dados do localStorage. 
+Verifica-se há algum registro pelo nome do jogador
+    Se sim: 
+        Atualiza o timestamp
+    Caso não:
+        insere o no localStorage  
+
+Ao final de cada partida os dados do jogador é atualizado no localStorage
+
+
+Para exibir:
+    Recuperar os dados do localStorage, ordenada e relaciona
