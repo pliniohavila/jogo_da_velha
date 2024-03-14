@@ -45,15 +45,12 @@ function startGame() {
     addEventListeners();
     
     const players = getInfoPlayers();
-    console.log(players);
     if (!checkNamePlayers(players))
         return;
 
     const modal = document.getElementById("options");  
     modal.style.display = 'none';
     PLAYER_1 = new Player(players.player1, players.player1Symbol);
-    console.log(players);
-    console.log(MACHINE);
     if (players.player2.length === 0) {
         PLAYER_2 = new Player('Baymax', players.player2Symbol);
     } else {
@@ -115,7 +112,6 @@ function playerMark(td) {
         return;
     }
     if (MACHINE === 1) {
-        console.log('call machine ', i++)
         machineMark();
     }
     else {
@@ -254,7 +250,6 @@ function checkNamePlayers(players) {
         return false;
     }
     if (TWO_PLAYERS === true && players.player2 === '') {
-        console.log('two ', TWO_PLAYERS)
         getById('player2').parentElement.querySelector('.player-name-empty').style.display = 'block';
         return false;
     }
@@ -324,7 +319,6 @@ function getRandom() {
 }
 
 function playerMarkCallback() {
-    console.log(td);
     playerMark(td);
 }
 

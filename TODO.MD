@@ -18,7 +18,7 @@ BUG NA ATUALIZAÇÃO DO NOME DOS PLAYERS
 https://sweetalert2.github.io
 
 [X] Remove o event listener após o término da partida
-[ ] Alerts mais legais
+[X] Alerts mais legais
 [X] Botão para reiniciar jogo
 [X] Botão para adicionar jogador 
 [X] Opção de símbolo seja gráfica
