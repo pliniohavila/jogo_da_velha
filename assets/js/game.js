@@ -52,6 +52,8 @@ function startGame() {
     const modal = document.getElementById("options");  
     modal.style.display = 'none';
     PLAYER_1 = new Player(players.player1, players.player1Symbol);
+    console.log(players);
+    console.log(MACHINE);
     if (players.player2.length === 0) {
         PLAYER_2 = new Player('Baymax', players.player2Symbol);
     } else {
@@ -90,8 +92,8 @@ function newGame() {
     resetGame() 
     resetPlacar()
     removeEventListeners();
-    const modal = document.getElementById("options");  
-    modal.style.display = 'block';
+    getById('actual-player').style.display = 'none';
+    document.getElementById("options").style.display = 'block';
 }
 
 function updateActualPlayerShow() {
@@ -109,7 +111,6 @@ function playerMark(td) {
         x_div.style.display = 'block';
     }
     if (checkEndGame()) {
-        console.log('Fim de jogo');
         removeEventListeners();
         return;
     }
@@ -146,8 +147,11 @@ function machineMark() {
     }
     setTimeout(() => { 
         if (checkEndGame())
+        {
+            removeEventListeners();
             return;
-     }, 300);
+        }
+     }, 200);
 }
 
 function resetGame() {
@@ -159,7 +163,7 @@ function resetGame() {
     all_mark_o.forEach((mark_o) => {
         mark_o.style.display = "none";
     });     
-    remove_highlight();
+    removeHighlight();
     resetDataGame(); 
     addEventListeners();
     const randomPlayerStart = getRandom() % 3;
@@ -213,7 +217,7 @@ function highlight(index) {
     getById(q2).classList.add('highlight');
 }
 
-function remove_highlight() {
+function removeHighlight() {
     for (let td of tds) {
         if (td.classList.contains('highlight'))
             td.classList.remove('highlight');
@@ -340,6 +344,13 @@ function removeEventListeners() {
     });
 }   
 
+function resetNamePlayes() {
+    const inputs = document.querySelectorAll(".modal-body .infos-input");
+    for (const input of inputs) {
+        input.value = '';
+    }
+}
+
 function getInfoPlayers() {
     const inputs = document.querySelectorAll(".modal-body .infos-input");
     const symbol = document.querySelector('input[name="symbol"]:checked').value;
@@ -358,6 +369,7 @@ function resetDataGame() {
         for (let i in line)
             line[i] = 0;
     });
+    resetNamePlayes();
 }
 
 function resetPlacar() {
@@ -365,6 +377,7 @@ function resetPlacar() {
     PLACAR.player2 = 0;
     PLACAR.tie = 0;
 }
+
 // WRAPPERS 
 
 function getById(strId) {
