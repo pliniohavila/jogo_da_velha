@@ -89,18 +89,15 @@ function playerMark(td) {
         const x_div = td.querySelector(ACTUAL_PLAYER.symbol.symbolIcon);
         x_div.style.display = 'block';
     }
-    setTimeout(() => { 
-        if (checkEndGame())
-            return;
-        if (MACHINE === 1) {
-            machineMark();
-        }
-        else {
-            ACTUAL_PLAYER = ACTUAL_PLAYER === PLAYER_1 ? PLAYER_2 : PLAYER_1;
-            updateActualPlayerShow();
-        } 
-            
-    }, 300);
+    if (checkEndGame())
+        return;
+    if (MACHINE === 1) {
+        machineMark();
+    }
+    else {
+        ACTUAL_PLAYER = ACTUAL_PLAYER === PLAYER_1 ? PLAYER_2 : PLAYER_1;
+        updateActualPlayerShow();
+    } 
 }
 
 function machineMark() {
