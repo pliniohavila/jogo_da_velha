@@ -35,16 +35,22 @@ const tds_arr = Array.from(tds);
 let PLAYER_1;
 let PLAYER_2;
 let ACTUAL_PLAYER;
-let MACHINE = 1;
+let TWO_PLAYERS = false;
+let MACHINE;
 
 // HANDLERS
 
 function startGame() {
-    add_event_listener();
-    const modal = document.getElementById("options");
-    modal.style.display = 'none';
+    MACHINE = 1;
+    addEventListeners();
     
     const players = getInfoPlayers();
+    console.log(players);
+    if (!checkNamePlayers(players))
+        return;
+
+    const modal = document.getElementById("options");  
+    modal.style.display = 'none';
     PLAYER_1 = new Player(players.player1, players.player1Symbol);
     if (players.player2.length === 0) {
         PLAYER_2 = new Player('Baymax', players.player2Symbol);
@@ -75,10 +81,23 @@ function startGame() {
     }   
 }
 
+function newGame() {
+    PLAYER_1 = undefined;
+    PLAYER_2 = undefined;
+    ACTUAL_PLAYER = undefined;
+    TWO_PLAYERS = false;
+    MACHINE = 1;
+    resetGame() 
+    resetPlacar()
+    removeEventListeners();
+    const modal = document.getElementById("options");  
+    modal.style.display = 'block';
+}
+
 function updateActualPlayerShow() {
     getById('actual-player-content').innerText = `Agora é a vez de ${ACTUAL_PLAYER.name}`;
 }
-
+let i = 0;
 function playerMark(td) {
     const [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
@@ -89,9 +108,13 @@ function playerMark(td) {
         const x_div = td.querySelector(ACTUAL_PLAYER.symbol.symbolIcon);
         x_div.style.display = 'block';
     }
-    if (checkEndGame())
+    if (checkEndGame()) {
+        console.log('Fim de jogo');
+        removeEventListeners();
         return;
+    }
     if (MACHINE === 1) {
+        console.log('call machine ', i++)
         machineMark();
     }
     else {
@@ -138,6 +161,7 @@ function resetGame() {
     });     
     remove_highlight();
     resetDataGame(); 
+    addEventListeners();
     const randomPlayerStart = getRandom() % 3;
     if (randomPlayerStart === PLAYER_2)
         machineMark(); 
@@ -202,15 +226,16 @@ function showInputPlayer2() {
     const divInputPlayer2ClassList = divInputPlayer2.classList;
     if (divInputPlayer2ClassList.contains('infos-group-hidden')) {
         divInputPlayer2.classList.remove('infos-group-hidden');
-        btnAddPLayer.innerText = 'Remover Jogador(a)'
+        btnAddPLayer.innerText = 'Remover Pessoa Jogadora';
+        TWO_PLAYERS = true;
     }
     else {
         divInputPlayer2.classList.add('infos-group-hidden');
-        btnAddPLayer.innerText = 'Adicionar Jogador(a)'
+        btnAddPLayer.innerText = 'Adicionar Pessoa Jogadora'
+        TWO_PLAYERS = false;
     }
 }
         
-
 function updatePlacar() {
     getById('placar-player1-points').innerText = PLACAR.player1;
     getById('placar-player2-points').innerText = PLACAR.player2;
@@ -218,6 +243,20 @@ function updatePlacar() {
 }
 
 // HELPERS 
+
+function checkNamePlayers(players) {
+    if (players.player1 === '') {
+        getById('player1').parentElement.querySelector('.player-name-empty').style.display = 'block';
+        return false;
+    }
+    if (TWO_PLAYERS === true && players.player2 === '') {
+        console.log('two ', TWO_PLAYERS)
+        getById('player2').parentElement.querySelector('.player-name-empty').style.display = 'block';
+        return false;
+    }
+    return true;
+}
+
 function checkWin(p) {
     let checkedWin = {
         won: false,
@@ -280,26 +319,37 @@ function getRandom() {
     return Math.floor(Math.random() * 3);
 }
 
-function add_event_listener() {
+function playerMarkCallback() {
+    console.log(td);
+    playerMark(td);
+}
+
+function handleClick() {
+    playerMark(this);
+}
+
+function addEventListeners() {
     tds_arr.forEach((td) => {
-        td.addEventListener('click', () => {
-            playerMark(td);
-        });
+        td.addEventListener('click', handleClick);
     });
 }
 
+function removeEventListeners() {
+    tds_arr.forEach((td) => {
+        td.removeEventListener('click', handleClick);
+    });
+}   
+
 function getInfoPlayers() {
     const inputs = document.querySelectorAll(".modal-body .infos-input");
-    const select = document.querySelector(".modal-body select");
+    const symbol = document.querySelector('input[name="symbol"]:checked').value;
    
     const values = {};
     for (const input of inputs) {
       values[input.name] = input.value;
     }
-
-    values.player1Symbol = select.value;
+    values.player1Symbol = symbol;
     values.player2Symbol = values.player1Symbol === 'x' ? 'o' : 'x';
-   
     return values;
 }
 
@@ -310,6 +360,11 @@ function resetDataGame() {
     });
 }
 
+function resetPlacar() {
+    PLACAR.player1 = 0;
+    PLACAR.player2 = 0;
+    PLACAR.tie = 0;
+}
 // WRAPPERS 
 
 function getById(strId) {

@@ -93,35 +93,49 @@
         <button id="retart" class="restart" onclick="resetGame()">
             Reiniciar Partida
         </button>
+        <button id="retart" class="restart" onclick="newGame()">
+            Novo Jogo
+        </button>
     </div>
 </div>
 
 <div id="options" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-        <!-- <span class="close">&times;</span> -->
             <h2>Opções de Jogo</h2>
         </div>
     <div class="modal-body">
         <div class="infos-group">
-            <label for="player1">Nome do Jogador(a) 1: </label>
+            <label for="player1">
+                Nome da Pessoa Jogadora 1: 
+                <span class="player-name-empty">Insira o nome da Pessoa Jogadora</span>
+            </label>
             <input type="text" name="player1" id="player1" class="infos-input"/>
         </div>
         <div class="infos-group">
             <button type="button" class="btn-add-player" id="option-two-players" onclick="showInputPlayer2()">
-                Adicionar Jogador(a)
+                Adicionar Pessoa Jogadora
             </button>
         </div>
         <div class="infos-group infos-group-hidden" id="input-player2">
-            <label for="player2">Nome do Jogador(a) 2: </label>
+            <label for="player2">
+                Nome da Pessoa Jogadora 2: 
+                <span class="player-name-empty">Insira o nome da Pessoa Jogadora</span>
+            </label>
             <input type="text" name="player2" id="player2" class="infos-input"/>
         </div>
         <div class="infos-group">
-            <label for="player2">O Jogador 1 escolhe qual simbolo?</label>
-            <select name="select">
-                <option value="x">X</option>
-                <option value="o" selected>O</option>
-            </select>
+            <label for="player2">O Jogador 1 escolhe qual símbolo?</label>
+            <div class="radio-image">
+                <label for="x">
+                    <input type="radio" name="symbol" id="x" value="x" checked>
+                    <img src="assets/img/x.svg" alt="X">
+                </label>
+                <label for="o">
+                    <input type="radio" name="symbol" id="o" value="o">
+                    <img src="assets/img/o.svg" alt="O">
+                </label>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
