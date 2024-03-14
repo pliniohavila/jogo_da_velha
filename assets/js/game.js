@@ -179,7 +179,7 @@ function checkEndGame() {
         PLACAR.player1++;
         updatePlacar();
         setTimeout(() => {
-            alert(`A pessoa jogadora ${PLAYER_1.name} ganhou 😎`);
+            Swal.fire(`A pessoa jogadora ${PLAYER_1.name} ganhou 😎`);
         }, 200);
         return true;
     }
@@ -191,9 +191,9 @@ function checkEndGame() {
         updatePlacar();
         setTimeout(() => {
             if (MACHINE == 1)
-                alert(`Você perdeu 😒`);
+                Swal.fire("Você perdeu 😒");
             else 
-                alert(`A pessoa jogadora ${PLAYER_2.name} ganhou 😎`);
+                Swal.fire(`A pessoa jogadora ${PLAYER_2.name} ganhou 😎`);
         }, 200);
         return true;
     }

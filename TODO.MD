@@ -19,7 +19,7 @@ https://sweetalert2.github.io
 
 [X] Remove o event listener após o término da partida
 [ ] Alerts mais legais
-[ ] Botão para reiniciar jogo: bug que após reiniciar de dois jogadores para apenas máquina, a máquina deixa de jogar
+[X] Botão para reiniciar jogo
 [X] Botão para adicionar jogador 
 [X] Opção de símbolo seja gráfica
 [ ] Ranking dos jogadores
