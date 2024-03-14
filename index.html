@@ -108,10 +108,9 @@
             <input type="text" name="player1" id="player1" class="infos-input"/>
         </div>
         <div class="infos-group">
-            <span>
-                <label for="option-two-players">Dois jogadores?</label>
-                <input type="checkbox" name="option-two-players" id="option-two-players" onchange="showInputPlayer2()">
-            </span>
+            <button type="button" class="btn-add-player" id="option-two-players" onclick="showInputPlayer2()">
+                Adicionar Jogador(a)
+            </button>
         </div>
         <div class="infos-group infos-group-hidden" id="input-player2">
             <label for="player2">Nome do Jogador(a) 2: </label>

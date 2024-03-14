@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+:root {
+    --primary: #14bdac;
+    --secondary: #fff;
+}
+
 body {
     display: flex;
     align-items: center;
@@ -13,6 +18,7 @@ body {
 }
 
 button {
+    padding: 0.5rem;
     border-radius: 8px;
     cursor: pointer;
 }
@@ -46,8 +52,8 @@ table {
 
 /* .tr-middle:nth-child(2) { */
 .tr-middle {
-    border-top: 10px solid #14bdac;
-    border-bottom: 10px solid #14bdac;
+    border-top: 10px solid var(--primary);
+    border-bottom: 10px solid var(--primary);
 }
 
 .td-game {
@@ -57,7 +63,7 @@ table {
 }
 
 .td_border_right {
-    border-right: 10px solid #14bdac;
+    border-right: 10px solid var(--primary);
 }
 
 .mark_x {
@@ -114,12 +120,11 @@ td.highlight {
 
 .restart {
     font-size: 1.8rem;
-    padding: 1rem;
 }
 
 .restart:hover {
     color: #fff;
-    background-color: #14bdac;
+    background-color: var(--primary);
 }
 
 .modal {
@@ -150,7 +155,7 @@ td.highlight {
 .modal-header {
     padding: 0.5rem;
     text-align: center;
-    background-color: #14bdac;
+    background-color: var(--primary);
     color: white;
 }
 
@@ -175,11 +180,21 @@ td.highlight {
     color: #495057;
     padding: 0.3rem;
     border: none;
-    outline: 2px solid #14bdac;
+    outline: 2px solid var(--primary);
 }
 
 input[type='text'] {
     width: 100%;
+}
+
+.btn-add-player {
+    border-radius: 0%;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.btn-add-player:hover {
+    color: var(--primary);
 }
 
 input[type='checkbox'] {
@@ -193,37 +208,31 @@ select {
     height: 30px;
     width: 60%;
     text-align: center;
-    border: 1px solid #14bdac;
-    /* outline: 2px solid #14bdac; */
+    border: 1px solid var(--primary);
     cursor: pointer;
 }
 
 select:focus {
-    border: 1px solid #14bdac;
+    border: 1px solid var(--primary);
     background-color: #18dac6;
     color: #fff;
     transition-duration: 500ms;
-}
-
-option {
-    border: none;
-    cursor: pointer;
 }
 
 .modal-footer {
     text-align: center;
     margin-top: 1rem;
     padding: 5px 16px;
-    background-color: #14bdac;
+    background-color: var(--primary);
     color: white;
 }
 
 .start {
+    font-weight: 700;
     font-size: 1rem;
-    padding: 0.5rem;
 }
 
 .start:hover {
-    color: #14bdac;
+    color: var(--primary);
     background-color: #fefefe;
 }

@@ -198,12 +198,18 @@ function remove_highlight() {
 
 function showInputPlayer2() {
     const divInputPlayer2 = getById('input-player2');
+    const btnAddPLayer = getById('option-two-players');
     const divInputPlayer2ClassList = divInputPlayer2.classList;
-    if (divInputPlayer2ClassList.contains('infos-group-hidden'))
+    if (divInputPlayer2ClassList.contains('infos-group-hidden')) {
         divInputPlayer2.classList.remove('infos-group-hidden');
-    else 
+        btnAddPLayer.innerText = 'Remover Jogador(a)'
+    }
+    else {
         divInputPlayer2.classList.add('infos-group-hidden');
+        btnAddPLayer.innerText = 'Adicionar Jogador(a)'
+    }
 }
+        
 
 function updatePlacar() {
     getById('placar-player1-points').innerText = PLACAR.player1;
