@@ -10,10 +10,6 @@
 }
 
 body {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
     font-family: sans-serif;
 }
 
@@ -23,7 +19,40 @@ button {
     cursor: pointer;
 }
 
+header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 2rem 5rem;
+}
+
+.btn-play {
+    font-size: 2rem;
+    margin-right: 5rem;
+    color: #fff; 
+    background-color: var(--primary);
+    transition: 200ms;
+}
+
+.btn-play:hover {
+    color: var(--primary);
+    background-color: #fff;
+}
+
+main {
+    padding-left: 5rem;
+}
+
+.main-header h2 {
+    color: var(--primary);
+    font-weight: 700;
+}
+
 .container {
+    /* display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center; */
     position: absolute;
     top: 50%;
     left: 50%;

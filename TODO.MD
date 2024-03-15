@@ -22,6 +22,7 @@ https://sweetalert2.github.io
 [X] Botão para reiniciar jogo
 [X] Botão para adicionar jogador 
 [X] Opção de símbolo seja gráfica
+[ ] att_input_lis
 [ ] Ranking dos jogadores
     Deve constar:
         nome do jogador, data da última partida, Quantidade de vitórias, empates e derrotas 
@@ -36,6 +37,8 @@ TIC-TAC-TOE [
         lastTimePleyed: timestamp
     }, 
 ]
+
+https://www.w3schools.com/tags/att_input_list.asp
 
 Toda vez que um novo é iniciado, recupera os dados do localStorage. 
 Verifica-se há algum registro pelo nome do jogador

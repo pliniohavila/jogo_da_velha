@@ -57,7 +57,8 @@ function startGame() {
         PLAYER_2 = new Player(players.player2, players.player2Symbol);
         MACHINE = 0;
     }
-
+    // Save localStorage game data
+    saveInitialGame(PLAYER_1, PLAYER_2);
     getById('placar-player1-name').innerText = PLAYER_1.name;
     getById('placar-player2-name').innerText = PLAYER_2.name;
 
@@ -74,10 +75,13 @@ function startGame() {
         } 
     }     
     updatePlacar();
-    if (MACHINE === 0) {
-        getById('actual-player').style.display = 'block';
-        updateActualPlayerShow();
-    }   
+    if (MACHINE === 0) 
+        showPlacar();
+}
+
+function showPlacar() {
+    getById('actual-player').style.display = 'block';
+    updateActualPlayerShow();
 }
 
 function newGame() {
@@ -101,6 +105,9 @@ function playerMark(td) {
     const [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
     const column = parseInt(column_s);
+    if (data_game[line][column] !== 0) {
+        return;
+    }
     if (data_game[line][column] === 0)
     {
         data_game[line][column] = ACTUAL_PLAYER.symbol.symbolId;

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classificação</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/styles.css" /> 
+</head>
+<body>
+    <header>
+        <h1>
+            Jogo da Velha
+        </h1> 
+        <button class="btn-play">
+            Jogar
+        </button>
+    </header>
+     <!-- Posição Nome Pontos Vitórias Empates Derrotas -->
+    <main>
+        <div class="main-header">
+            <h2>Classificação</h2>
+        </div>
+        <table class="table-ranking">
+            <thead>
+                <tr>
+                    <th>Posição</th>
+                    <th>Nome</th>
+                    <th>Pontos</th>
+                    <th>Vitórias</th>
+                    <th>Empates</th>
+                    <th>Derrotas</th>
+                </tr>
+            </thead>
+        </table>
+
+    </main>
+
+
+    <h1>Local Storage tests</h1>
+
+    <button onclick="addData()">Add Data</button>
+    <button onclick="getData()">Show Data</button>
+    <!-- <div id="data-game"></div> -->
+    <ul id="data-game"></ul>
+
+    <!-- const playerData = {
+        name: player.name,
+        wind: 0,
+        losses: 0,
+        ties: 0,
+        lastTimePlayed: new Date().toISOString()
+    } -->
+
+   
+</body>
+<script>
+function getData() {
+    const storedUserData = localStorage.getItem('tic-tac-toe')
+
+    const showDiv = document.getElementById('id');
+
+    if (storedUserData) {
+        const userData = JSON.parse(storedUserData);
+        console.log(userData);
+    } else {
+        console.log('User data not found in local storage');
+    }
+}
+
+</script>
+<script src="assets/js/gameData.js"></script>
+<script src="assets/js/showDataGame.js"></script>
+</html>
