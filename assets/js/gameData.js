@@ -35,9 +35,10 @@ function saveInitialGame(player1, player2) {
 function initialPlayerData(player) {
     const playerData = {
         name: player.name,
-        wind: 0,
+        wins: 0,
         losses: 0,
         ties: 0,
+        points: 0,
         lastTimePlayed: new Date().toISOString()
     }
     return playerData;

@@ -40,7 +40,7 @@ header {
 }
 
 main {
-    padding-left: 5rem;
+    padding: 0 5rem;
 }
 
 .main-header h2 {
@@ -79,7 +79,6 @@ table {
     border-collapse: collapse;
 }
 
-/* .tr-middle:nth-child(2) { */
 .tr-middle {
     border-top: 10px solid var(--primary);
     border-bottom: 10px solid var(--primary);
@@ -158,6 +157,43 @@ td.highlight {
     color: #fff;
     background-color: var(--primary);
 }
+
+/* RANKING */
+
+.table-ranking {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.thead-ranking {
+    width: 100%;
+    border-bottom: 2px solid var(--primary);
+}
+
+.th-ranking {
+    padding-left: 1.5rem;
+}
+
+.tr-ranking {
+    text-align: center;
+}
+
+.tr-ranking > td {
+    padding: 5px 0;
+}
+
+.tr-ranking:nth-child(odd) {
+    color: black;
+    background-color: #abece5;
+}
+
+.tr-ranking:nth-child(even) {
+    color: var(--primary);
+    background-color: var(--secondary);
+}
+
+
+/* MODAL */
 
 .modal {
     display: block;

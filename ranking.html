@@ -21,53 +21,24 @@
             <h2>Classificação</h2>
         </div>
         <table class="table-ranking">
-            <thead>
+            <thead class="thead-ranking">
                 <tr>
-                    <th>Posição</th>
-                    <th>Nome</th>
-                    <th>Pontos</th>
-                    <th>Vitórias</th>
-                    <th>Empates</th>
-                    <th>Derrotas</th>
+                    <th class="th-ranking">Posição</th>
+                    <th class="th-ranking">Nome</th>
+                    <th class="th-ranking">Última Partida</th>
+                    <th class="th-ranking">Pontos</th>
+                    <th class="th-ranking">Vitórias</th>
+                    <th class="th-ranking">Empates</th>
+                    <th class="th-ranking">Derrotas</th>
                 </tr>
             </thead>
+            <tbody class="tbody-ranking" id="data-game">
+
+            </tbody>
         </table>
 
     </main>
-
-
-    <h1>Local Storage tests</h1>
-
-    <button onclick="addData()">Add Data</button>
-    <button onclick="getData()">Show Data</button>
-    <!-- <div id="data-game"></div> -->
-    <ul id="data-game"></ul>
-
-    <!-- const playerData = {
-        name: player.name,
-        wind: 0,
-        losses: 0,
-        ties: 0,
-        lastTimePlayed: new Date().toISOString()
-    } -->
-
-   
 </body>
-<script>
-function getData() {
-    const storedUserData = localStorage.getItem('tic-tac-toe')
-
-    const showDiv = document.getElementById('id');
-
-    if (storedUserData) {
-        const userData = JSON.parse(storedUserData);
-        console.log(userData);
-    } else {
-        console.log('User data not found in local storage');
-    }
-}
-
-</script>
 <script src="assets/js/gameData.js"></script>
 <script src="assets/js/showDataGame.js"></script>
 </html>
