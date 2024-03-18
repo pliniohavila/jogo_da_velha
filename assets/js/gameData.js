@@ -31,7 +31,6 @@ function saveInitialGame(player1, player2) {
     localStorage.setItem(KEY_DATA_GAME, JSON.stringify(gameData));
 }
 
-
 function initialPlayerData(player) {
     const playerData = {
         name: player.name,
@@ -43,5 +42,3 @@ function initialPlayerData(player) {
     }
     return playerData;
 }
-
-// SAVE GAME RESULTS

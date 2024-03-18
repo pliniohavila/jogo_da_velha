@@ -23,6 +23,8 @@ const symbols = {
     }
 }
 
+// const KEY_DATA_GAME = 'tic-tac-toe';
+
 class Player {
     constructor(name, symbol) {
         this.name = name;
@@ -177,10 +179,25 @@ function resetGame() {
 function checkEndGame() {
     let checkedWin = checkWin(PLAYER_1.symbol.symbolId); 
 
+    // const endGameEvent = new CustomEvent('endGameEvent', {
+    //     detail: {
+    //         mensagem: 'A match ended'
+    //     }
+    // });
+
+    // let checked = {
+    //     gameEnded: false,
+    //     win: '', 
+    //     loser: '',
+    //     tie: false, 
+    //     players: [],
+    // };
+    
     if (checkedWin.won) {
         highlight(checkedWin.index);
         PLACAR.player1++;
         updatePlacar();
+        saveDataPlayerWin(PLAYER_1, PLAYER_2);
         setTimeout(() => {
             Swal.fire(`A pessoa jogadora ${PLAYER_1.name} ganhou 😎`);
         }, 200);
@@ -192,6 +209,7 @@ function checkEndGame() {
         highlight(checkedWin.index);
         PLACAR.player2++;
         updatePlacar();
+        saveDataPlayerWin(PLAYER_2, PLAYER_1);
         setTimeout(() => {
             if (MACHINE == 1)
                 Swal.fire("Você perdeu 😒");
@@ -204,10 +222,54 @@ function checkEndGame() {
     if (checkTie()) {
         PLACAR.tie++;
         updatePlacar();
+        saveDataTie(PLAYER_2, PLAYER_1);
         alert("Deu empate 🤣");
         return true;
     } 
     return false;
+}
+
+function getIndexPlayerData(playerName, gameData) {
+    const index = gameData.findIndex((p) => {
+        return p.name === playerName;
+    });
+    return index;
+}
+
+function saveDataPlayerWin(playerWin, playerLoser) {
+    const storedGameData = localStorage.getItem(KEY_DATA_GAME);
+    const gameData = JSON.parse(storedGameData);
+
+    indexWin = getIndexPlayerData(playerWin.name, gameData);
+    indexLoser = getIndexPlayerData(playerLoser.name, gameData);
+    console.log(indexLoser, playerLoser);
+    if (indexWin !== (-1)) {
+        gameData[indexWin].wins++;
+        gameData[indexWin].points = (gameData[indexWin].wins * 3) + (gameData[indexWin].ties * 2);
+    }
+    if (indexLoser !== (-1)) {
+        gameData[indexLoser].losses++;
+    }
+    localStorage.setItem(KEY_DATA_GAME, JSON.stringify(gameData));
+}
+
+function saveDataTie(p1, p2) {
+    const storedGameData = localStorage.getItem(KEY_DATA_GAME);
+    const gameData = JSON.parse(storedGameData);
+
+    player1 = getIndexPlayerData(p1.name, gameData);
+    player2 = getIndexPlayerData(p2.name, gameData);
+    if (player1 !== (-1)) {
+        gameData[player1].ties++;
+        gameData[player1].points = (gameData[player1].wins * 3) + (gameData[player1].ties * 2);
+    }
+    if (player2 !== (-1)) {
+        player2.ties++;
+        gameData[player2].points = (gameData[player2].wins * 3) + (gameData[player2].ties * 2);
+    }
+    console.log(gameData);
+    localStorage.setItem(KEY_DATA_GAME, JSON.stringify(gameData));
+
 }
 
 function highlight(index) {

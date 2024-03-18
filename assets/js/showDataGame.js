@@ -21,6 +21,7 @@ function exibirDados(dataGame) {
     });
 }
 
+// TODO Verificar para quando o objeto for null
 function checkDataPlayerObject(obj) {
     const expectedProperties = {
         name: '',
@@ -61,5 +62,11 @@ function formatDate(dateISO) {
     return dateFmt;
 }
 
-const gameStoragedData = JSON.parse(localStorage.getItem(KEY_DATA_GAME));
-exibirDados(gameStoragedData);
+(function updateRanking(){
+    const gameStoragedData = JSON.parse(localStorage.getItem(KEY_DATA_GAME));
+    if (!gameStoragedData)
+        return;
+    exibirDados(gameStoragedData);
+    setTimeout(updateRanking, 5000);
+    console.log('updateRanking called');
+  })()

@@ -26,7 +26,12 @@ https://sweetalert2.github.io
 [ ] Ranking dos jogadores
     Deve constar:
         nome do jogador, data da última partida, Quantidade de vitórias, empates e derrotas 
-        Ordenado, por vitória: 3pts, Empates 2pts, Derrota 0pts
+        Ordenado, por vitória: 3pts, Empates 1pts, Derrota 0pts
+
+        Critérios de desempate 
+        1 - Por mais vitórias 
+        2 - Menos empates 
+        3 - Menos derrotas
 
 TIC-TAC-TOE [
     Player: {
