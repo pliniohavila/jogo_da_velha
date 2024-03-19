@@ -78,3 +78,9 @@ Ao final de cada partida os dados do jogador é atualizado no localStorage
 
 Para exibir:
     Recuperar os dados do localStorage, ordenada e relaciona
+
+
+
+Variáveis de ambiente:
+
+https://stackoverflow.com/questions/45852926/how-can-i-add-env-to-codeigniter
