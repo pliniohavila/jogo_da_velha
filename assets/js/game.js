@@ -320,6 +320,15 @@ function checkNamePlayers(players) {
         getById('player2').parentElement.querySelector('.player-name-empty').style.display = 'block';
         return false;
     }
+    if (players.player1 === 'Baymax' || players.player1 === 'Baymax') {
+        Swal.fire({
+            text: 'Não é possível utilizar o nome Baymax 😁',
+            type: 'warning',
+            confirmButtonColor: '#14bdac'
+        });
+        return false;  
+    }
+              
     return true;
 }
 
@@ -418,7 +427,7 @@ function getInfoPlayers() {
    
     const values = {};
     for (const input of inputs) {
-      values[input.name] = input.value;
+        values[input.name] = input.value;
     }
     values.player1Symbol = symbol;
     values.player2Symbol = values.player1Symbol === 'x' ? 'o' : 'x';
