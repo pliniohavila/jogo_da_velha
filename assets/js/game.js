@@ -25,6 +25,7 @@ const symbols = {
 
 class Player {
     constructor(name, symbol) {
+        // this.id = getId(name);
         this.name = name;
         this.symbol = symbols[symbol];
     }
@@ -57,6 +58,7 @@ function startGame() {
         PLAYER_2 = new Player(players.player2, players.player2Symbol);
         MACHINE = 0;
     }
+    console.log(typeof(PLAYER_1));
     // Save localStorage game data
     saveInitialGame(PLAYER_1, PLAYER_2);
     getById('placar-player1-name').innerText = PLAYER_1.name;
@@ -421,6 +423,9 @@ function resetNamePlayes() {
     }
 }
 
+// {player1: 'Terry Chris', player2: '', player1Symbol: 'x', player2Symbol: 'o'}
+// Garante a entrada dos nomes dos usuários
+// E define o símbolo
 function getInfoPlayers() {
     const inputs = document.querySelectorAll(".modal-body .infos-input");
     const symbol = document.querySelector('input[name="symbol"]:checked').value;
