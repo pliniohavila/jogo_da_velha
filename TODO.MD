@@ -5,7 +5,8 @@
 [X] Jogador Escolhe entre `X` ou `O`  
 [X] Destacar os quadrados relativos à vitória 
 [X] Placar
-[ ] Remove Event listerner
+[X] Remove Event listerner
+[ ] Impedir usuário de utilizar nome 'Baymax'
 
 // baymax
 Nome do jogador 1: 
@@ -23,6 +24,7 @@ https://sweetalert2.github.io
 [X] Botão para adicionar jogador 
 [X] Opção de símbolo seja gráfica
 [ ] att_input_lis
+[ ] Não incluir Baymax no ranking
 [ ] Ranking dos jogadores
     Deve constar:
         nome do jogador, data da última partida, Quantidade de vitórias, empates e derrotas 

@@ -23,8 +23,6 @@ const symbols = {
     }
 }
 
-// const KEY_DATA_GAME = 'tic-tac-toe';
-
 class Player {
     constructor(name, symbol) {
         this.name = name;
@@ -176,56 +174,59 @@ function resetGame() {
         machineMark(); 
 }
 
+function showWinAlert(winner) {
+    setTimeout(() => {
+      const message = 'Baymax' === winner.name
+        ? "Você perdeu 😒"
+        : `A pessoa jogadora ${winner.name} ganhou 😎`;
+      Swal.fire(message);
+    }, 200);
+  }
+
+function showTieAlert() {
+    setTimeout(() => {
+      Swal.fire("Deu empate 🤣");
+    }, 200);
+}
+
+function updateScore(placarId) {
+    PLACAR[`player${placarId}`]++;
+    updatePlacar();
+}
+
+function handlePlayerWin(winner, loser, placarId, indexToHighlight) {
+    highlight(indexToHighlight);
+    updateScore(placarId);
+    saveDataPlayerWin(winner, loser);
+    showWinAlert(winner);
+}
+  
+function handleTie(player1, player2) {
+    PLACAR.tie++;
+    showTieAlert();
+    saveDataTie(player1, player2);
+    updatePlacar();
+}
+
 function checkEndGame() {
-    let checkedWin = checkWin(PLAYER_1.symbol.symbolId); 
-
-    // const endGameEvent = new CustomEvent('endGameEvent', {
-    //     detail: {
-    //         mensagem: 'A match ended'
-    //     }
-    // });
-
-    // let checked = {
-    //     gameEnded: false,
-    //     win: '', 
-    //     loser: '',
-    //     tie: false, 
-    //     players: [],
-    // };
+    const checkedPlayer1 = checkWin(PLAYER_1.symbol.symbolId);
+    const checkedPlayer2 = checkWin(PLAYER_2.symbol.symbolId);
     
-    if (checkedWin.won) {
-        highlight(checkedWin.index);
-        PLACAR.player1++;
-        updatePlacar();
-        saveDataPlayerWin(PLAYER_1, PLAYER_2);
-        setTimeout(() => {
-            Swal.fire(`A pessoa jogadora ${PLAYER_1.name} ganhou 😎`);
-        }, 200);
+    if (checkedPlayer1.won) {
+        handlePlayerWin(PLAYER_1, PLAYER_2, 1, checkedPlayer1.index);
         return true;
     }
 
-    checkedWin = checkWin(PLAYER_2.symbol.symbolId); 
-    if (checkedWin.won) {
-        highlight(checkedWin.index);
-        PLACAR.player2++;
-        updatePlacar();
-        saveDataPlayerWin(PLAYER_2, PLAYER_1);
-        setTimeout(() => {
-            if (MACHINE == 1)
-                Swal.fire("Você perdeu 😒");
-            else 
-                Swal.fire(`A pessoa jogadora ${PLAYER_2.name} ganhou 😎`);
-        }, 200);
+    if (checkedPlayer2.won) {
+        handlePlayerWin(PLAYER_2, PLAYER_1, 2, checkedPlayer2.index);
         return true;
     }
-        
-    if (checkTie()) {
-        PLACAR.tie++;
-        updatePlacar();
-        saveDataTie(PLAYER_2, PLAYER_1);
-        alert("Deu empate 🤣");
+    
+    const isTie = checkTie();
+    if (isTie) {
+        handleTie(PLAYER_1, PLAYER_2);
         return true;
-    } 
+    }
     return false;
 }
 
@@ -236,13 +237,12 @@ function getIndexPlayerData(playerName, gameData) {
     return index;
 }
 
-function saveDataPlayerWin(playerWin, playerLoser) {
+function saveDataPlayerWin(winner, loser) {
     const storedGameData = localStorage.getItem(KEY_DATA_GAME);
     const gameData = JSON.parse(storedGameData);
 
-    indexWin = getIndexPlayerData(playerWin.name, gameData);
-    indexLoser = getIndexPlayerData(playerLoser.name, gameData);
-    console.log(indexLoser, playerLoser);
+    indexWin = getIndexPlayerData(winner.name, gameData);
+    indexLoser = getIndexPlayerData(loser.name, gameData);
     if (indexWin !== (-1)) {
         gameData[indexWin].wins++;
         gameData[indexWin].points = (gameData[indexWin].wins * 3) + (gameData[indexWin].ties * 2);
@@ -264,12 +264,10 @@ function saveDataTie(p1, p2) {
         gameData[player1].points = (gameData[player1].wins * 3) + (gameData[player1].ties * 2);
     }
     if (player2 !== (-1)) {
-        player2.ties++;
+        gameData[player2].ties++;
         gameData[player2].points = (gameData[player2].wins * 3) + (gameData[player2].ties * 2);
     }
-    console.log(gameData);
     localStorage.setItem(KEY_DATA_GAME, JSON.stringify(gameData));
-
 }
 
 function highlight(index) {

@@ -111,7 +111,10 @@
                 Nome da Pessoa Jogadora 1: 
                 <span class="player-name-empty">Insira o nome da Pessoa Jogadora</span>
             </label>
-            <input type="text" name="player1" id="player1" class="infos-input"/>
+            <input type="text" name="player1" list="player1" id="player1" class="infos-input"/>
+            <datalist id="player1">
+                <option value="Peralta">
+            </datalist>
         </div>
         <div class="infos-group">
             <button type="button" class="btn-add-player" id="option-two-players" onclick="showInputPlayer2()">
@@ -123,7 +126,10 @@
                 Nome da Pessoa Jogadora 2: 
                 <span class="player-name-empty">Insira o nome da Pessoa Jogadora</span>
             </label>
-            <input type="text" name="player2" id="player2" class="infos-input"/>
+            <input type="text" name="player2" list="player2" id="player2" class="infos-input"/>
+            <datalist id="player2">
+                <option value="Diás">
+            </datalist>
         </div>
         <div class="infos-group">
             <label for="player2">O Jogador 1 escolhe qual símbolo?</label>
