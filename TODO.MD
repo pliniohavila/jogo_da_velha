@@ -46,14 +46,14 @@ TIC-TAC-TOE [
 ]
 
 
-TABLE TIC-TAC-TOE 
+TABLE GAME_DATA
 
-id 
-name
-wins
-losses
-ties
-lastTimePleyed: date
+id: int unsigned auto_increment NOT NULL
+name: varchar NOT NULL
+wins: int NOT NULL DEFAULT 0
+losses: int NOT NULL DEFAULT 0
+ties: int NOT NULL DEFAULT 0
+lastTimePleyed: varchar
 
 
 class Player {
@@ -84,3 +84,7 @@ Para exibir:
 Variáveis de ambiente:
 
 https://stackoverflow.com/questions/45852926/how-can-i-add-env-to-codeigniter
+
+Migrations
+
+https://medium.com/@sunfreitas/entendendo-as-migrações-do-codeigniter-3-parte-i-79b1e28a580c
