@@ -45,6 +45,25 @@ TIC-TAC-TOE [
     }, 
 ]
 
+
+TABLE TIC-TAC-TOE 
+
+id 
+name
+wins
+losses
+ties
+lastTimePleyed: date
+
+
+class Player {
+    constructor(name, symbol) {
+        this.id;
+        this.name = name;
+        this.symbol = symbols[symbol];
+    }
+}
+
 https://www.w3schools.com/tags/att_input_list.asp
 
 Toda vez que um novo é iniciado, recupera os dados do localStorage. 
