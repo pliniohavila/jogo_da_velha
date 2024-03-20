@@ -2,6 +2,7 @@
 
 GET players_info?player1={player1}&player2={player2}
 
+GET ranking  : Devolve um JSON com os dados já ordenados. Pretendo ordenar na busca no BD
 
 POST saveIsWinner
     body: JSON

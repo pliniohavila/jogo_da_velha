@@ -34,7 +34,7 @@ class Player {
     async fetchId() {
         try {
             const timestamp = new Date().toISOString();
-            const urlRequest = `${window.location.origin}:/player_info?player=${this.name}&t=${timestamp}`;
+            const urlRequest = `${window.location.origin}/player_info?player=${this.name}&t=${timestamp}`;
             const response = await fetch(urlRequest);
             const data = await response.json();
             this.id = data.id;
@@ -74,7 +74,6 @@ function startGame() {
 
     // Save localStorage game data
     // With the implementation of BD persistence mode, there is no need for localStorage 
-    console.log(PLAYER_1, PLAYER_2);
     saveInitialGame(PLAYER_1, PLAYER_2);
     getById('placar-player1-name').innerText = PLAYER_1.name;
     getById('placar-player2-name').innerText = PLAYER_2.name;
@@ -117,7 +116,7 @@ function newGame() {
 function updateActualPlayerShow() {
     getById('actual-player-content').innerText = `Agora é a vez de ${ACTUAL_PLAYER.name}`;
 }
-let i = 0;
+// let i = 0;
 function playerMark(td) {
     const [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
@@ -215,6 +214,7 @@ function handlePlayerWin(winner, loser, placarId, indexToHighlight) {
     highlight(indexToHighlight);
     updateScore(placarId);
     saveDataPlayerWin(winner, loser);
+    saveHasWinner(winner, loser);
     showWinAlert(winner);
 }
   
@@ -246,13 +246,21 @@ function checkEndGame() {
     }
     return false;
 }
-
+// Will be deprecated
 function getIndexPlayerData(playerName, gameData) {
     const index = gameData.findIndex((p) => {
         return p.name === playerName;
     });
     return index;
 }
+
+async function saveHasWinner(winner, loser) {
+    // localhost/endgame/save_has_winner?winnerId=1&loserId=3
+    const urlRequest = `${window.location.origin}/endgame/save_has_winner?winnerId=${winner.id}&t=${loser}`;
+    await fetch(urlRequest);
+}
+
+function saveIsTie(winner, loser) {}
 
 function saveDataPlayerWin(winner, loser) {
     const storedGameData = localStorage.getItem(KEY_DATA_GAME);
