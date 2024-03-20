@@ -25,9 +25,22 @@ const symbols = {
 
 class Player {
     constructor(name, symbol) {
-        // this.id = getId(name);
+        this.id = null; // Start null because the backend call go get ID is async
         this.name = name;
         this.symbol = symbols[symbol];
+        this.fetchId(); 
+    }
+
+    async fetchId() {
+        try {
+            const timestamp = new Date().toISOString();
+            const urlRequest = `${window.location.origin}:/player_info?player=${this.name}&t=${timestamp}`;
+            const response = await fetch(urlRequest);
+            const data = await response.json();
+            this.id = data.id;
+        } catch (error) {
+            console.error('Erro ao buscar ID:', error);
+        }
     }
 }
 const tds = document.getElementsByTagName('td');
@@ -58,8 +71,10 @@ function startGame() {
         PLAYER_2 = new Player(players.player2, players.player2Symbol);
         MACHINE = 0;
     }
-    console.log(typeof(PLAYER_1));
+
     // Save localStorage game data
+    // With the implementation of BD persistence mode, there is no need for localStorage 
+    console.log(PLAYER_1, PLAYER_2);
     saveInitialGame(PLAYER_1, PLAYER_2);
     getById('placar-player1-name').innerText = PLAYER_1.name;
     getById('placar-player2-name').innerText = PLAYER_2.name;
