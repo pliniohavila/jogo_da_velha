@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Player_info_model extends CI_Model {
+class Player_model extends CI_Model {
 
     public function __construct() 
     {
@@ -35,5 +35,16 @@ class Player_info_model extends CI_Model {
             $this->db->update('game_data');
         }
         return $id;
+    }
+
+    public function get_ranking()
+    {
+        $query = $this->db->query(
+            "SELECT id, name, points, wins, losses, ties, lastTimePlayed 
+            FROM game_data 
+            WHERE name != 'Baymax'
+            ORDER BY points 
+            DESC, wins DESC, losses ASC, ties ASC");
+        return $query->result_array();
     }
 }

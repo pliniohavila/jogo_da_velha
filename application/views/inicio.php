@@ -11,9 +11,6 @@
         <h1>
             Jogo da Velha
         </h1> 
-        <!-- <button class="btn-play">
-            Jogar
-        </button> -->
         <a href="<?php echo base_url(); ?>game" target="_blank" rel="noopener noreferrer">
         <button class="btn-play">
             Jogar
@@ -39,12 +36,27 @@
                 </tr>
             </thead>
             <tbody class="tbody-ranking" id="data-game">
-
+                <?php $index = 1 ?>
+                <?php foreach ($ranking as $player): ?>
+                    <tr class="tr-ranking">
+                        <td><?php echo $index++; ?></td>
+                        <td><?php echo $player['name']; ?></td>
+                        <td datetime="<?php echo $player['lastTimePlayed']; ?>">
+                            <?php 
+                                echo $player['lastTimePlayed']; 
+                            ?>
+                        </td>
+                        <td><?php echo $player['points']; ?></td>
+                        <td><?php echo $player['wins']; ?></td>
+                        <td><?php echo $player['ties']; ?></td>
+                        <td><?php echo $player['losses']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
 
     </main>
 </body>
-<script src="assets/js/gameData.js"></script>
+<!-- <script src="assets/js/gameData.js"></script>  -->
 <script src="assets/js/showDataGame.js"></script>
 </html>

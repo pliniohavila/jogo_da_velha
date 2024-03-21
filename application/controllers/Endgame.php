@@ -11,18 +11,34 @@ class Endgame extends CI_Controller {
         $this->load->model('Endgame_model');
     }
 
-    public function save_has_winner() {
+    public function save_has_winner()
+    {
         
-        $winnerId = $this->input->get('winnerId', TRUE);
-        $loserId = $this->input->get('loserId', TRUE);
-
-        // Check an error handling later 
-        $this->Endgame_model->saveWinner($winnerId);
-        // $this->Endgame_model->saveLoser($winnerId);
-
-        // $id = $this->Player_info_model->get_id_player($player, $last_time_played);
-        // $response = array('id' => $id);
+        $winner_id = $this->input->get('winnerId', TRUE);
+        $loser_id = $this->input->get('loserId', TRUE);
         
-        // echo json_encode($response);
+        try {
+            $this->Endgame_model->save_winner($winner_id);
+            $this->Endgame_model->save_loser($loser_id);
+        } catch (\Throwable $th) {            
+            http_response_code(500);
+            echo json_encode(['message' => false , 'message' => $th->getMessage()]);
+            exit();
+        }
+    }
+
+    public function save_is_tie()
+    {
+        $player1 = $this->input->get('p1', TRUE);
+        $player2 = $this->input->get('p2', TRUE);
+        
+        try {
+            $this->Endgame_model->save_is_tie($player1, $player2);
+        } catch (\Throwable $th) {
+            http_response_code(500);
+            echo json_encode(['message' => false , 'message' => $th->getMessage()]);
+            exit();
+        }
+
     }
 }

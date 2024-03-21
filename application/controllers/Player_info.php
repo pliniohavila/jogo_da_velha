@@ -8,7 +8,7 @@ class Player_info extends CI_Controller {
     function __construct()
     {
         parent::__construct();
-        $this->load->model('Player_info_model');
+        $this->load->model('Player_model');
     }
 
     public function index() {
@@ -16,7 +16,7 @@ class Player_info extends CI_Controller {
         $player = $this->input->get('player', TRUE);
         $last_time_played = $this->input->get('t', TRUE);
 
-        $id = $this->Player_info_model->get_id_player($player, $last_time_played);
+        $id = $this->Player_model->get_id_player($player, $last_time_played);
         $response = array('id' => $id);
         
         echo json_encode($response);

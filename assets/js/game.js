@@ -72,9 +72,6 @@ function startGame() {
         MACHINE = 0;
     }
 
-    // Save localStorage game data
-    // With the implementation of BD persistence mode, there is no need for localStorage 
-    saveInitialGame(PLAYER_1, PLAYER_2);
     getById('placar-player1-name').innerText = PLAYER_1.name;
     getById('placar-player2-name').innerText = PLAYER_2.name;
 
@@ -116,7 +113,7 @@ function newGame() {
 function updateActualPlayerShow() {
     getById('actual-player-content').innerText = `Agora é a vez de ${ACTUAL_PLAYER.name}`;
 }
-// let i = 0;
+
 function playerMark(td) {
     const [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
@@ -213,7 +210,6 @@ function updateScore(placarId) {
 function handlePlayerWin(winner, loser, placarId, indexToHighlight) {
     highlight(indexToHighlight);
     updateScore(placarId);
-    saveDataPlayerWin(winner, loser);
     saveHasWinner(winner, loser);
     showWinAlert(winner);
 }
@@ -221,7 +217,7 @@ function handlePlayerWin(winner, loser, placarId, indexToHighlight) {
 function handleTie(player1, player2) {
     PLACAR.tie++;
     showTieAlert();
-    saveDataTie(player1, player2);
+    saveIsTie(player1, player2);
     updatePlacar();
 }
 
@@ -246,53 +242,25 @@ function checkEndGame() {
     }
     return false;
 }
-// Will be deprecated
-function getIndexPlayerData(playerName, gameData) {
-    const index = gameData.findIndex((p) => {
-        return p.name === playerName;
-    });
-    return index;
-}
 
 async function saveHasWinner(winner, loser) {
     // localhost/endgame/save_has_winner?winnerId=1&loserId=3
-    const urlRequest = `${window.location.origin}/endgame/save_has_winner?winnerId=${winner.id}&t=${loser}`;
-    await fetch(urlRequest);
+    const urlRequest = `${window.location.origin}/endgame/save_has_winner?winnerId=${winner.id}&loserId=${loser.id}`;
+    try {
+        await fetch(urlRequest);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
-function saveIsTie(winner, loser) {}
-
-function saveDataPlayerWin(winner, loser) {
-    const storedGameData = localStorage.getItem(KEY_DATA_GAME);
-    const gameData = JSON.parse(storedGameData);
-
-    indexWin = getIndexPlayerData(winner.name, gameData);
-    indexLoser = getIndexPlayerData(loser.name, gameData);
-    if (indexWin !== (-1)) {
-        gameData[indexWin].wins++;
-        gameData[indexWin].points = (gameData[indexWin].wins * 3) + (gameData[indexWin].ties * 2);
+async function saveIsTie(player1, player2) {
+     // localhost/endgame/save_has_winner?winnerId=1&loserId=3
+    const urlRequest = `${window.location.origin}/endgame/save_is_tie?p1=${player1.id}&p2=${player2.id}`;
+    try {
+        await fetch(urlRequest);
+    } catch (error) {
+        console.error(error);
     }
-    if (indexLoser !== (-1)) {
-        gameData[indexLoser].losses++;
-    }
-    localStorage.setItem(KEY_DATA_GAME, JSON.stringify(gameData));
-}
-
-function saveDataTie(p1, p2) {
-    const storedGameData = localStorage.getItem(KEY_DATA_GAME);
-    const gameData = JSON.parse(storedGameData);
-
-    player1 = getIndexPlayerData(p1.name, gameData);
-    player2 = getIndexPlayerData(p2.name, gameData);
-    if (player1 !== (-1)) {
-        gameData[player1].ties++;
-        gameData[player1].points = (gameData[player1].wins * 3) + (gameData[player1].ties * 2);
-    }
-    if (player2 !== (-1)) {
-        gameData[player2].ties++;
-        gameData[player2].points = (gameData[player2].wins * 3) + (gameData[player2].ties * 2);
-    }
-    localStorage.setItem(KEY_DATA_GAME, JSON.stringify(gameData));
 }
 
 function highlight(index) {

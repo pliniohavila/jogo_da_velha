@@ -62,11 +62,21 @@ function formatDate(dateISO) {
     return dateFmt;
 }
 
-(function updateRanking(){
-    const gameStoragedData = JSON.parse(localStorage.getItem(KEY_DATA_GAME));
-    if (!gameStoragedData)
-        return;
-    exibirDados(gameStoragedData);
-    setTimeout(updateRanking, 5000);
-    console.log('updateRanking called');
-  })()
+// (function updateRanking(){
+//     const gameStoragedData = JSON.parse(localStorage.getItem(KEY_DATA_GAME));
+//     if (!gameStoragedData)
+//         return;
+//     exibirDados(gameStoragedData);
+//     // setTimeout(updateRanking, 5000);
+//     console.log('updateRanking called');
+//   })()
+
+
+function fmtAllDates() {
+    const dates = document.querySelectorAll('[datetime]');
+    dates.forEach((date) => {
+        const dateValue = date.getAttribute('datetime');
+        date.innerText = formatDate(dateValue);
+    });
+}
+fmtAllDates();
