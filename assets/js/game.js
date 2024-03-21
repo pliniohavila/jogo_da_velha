@@ -23,12 +23,24 @@ const symbols = {
     }
 }
 
-// const KEY_DATA_GAME = 'tic-tac-toe';
-
 class Player {
     constructor(name, symbol) {
+        this.id = null; // Start null because the backend call go get ID is async
         this.name = name;
         this.symbol = symbols[symbol];
+        this.fetchId(); 
+    }
+
+    async fetchId() {
+        try {
+            const timestamp = new Date().toISOString();
+            const urlRequest = `${window.location.origin}/player_info?player=${this.name}&t=${timestamp}`;
+            const response = await fetch(urlRequest);
+            const data = await response.json();
+            this.id = data.id;
+        } catch (error) {
+            console.error('Erro ao buscar ID:', error);
+        }
     }
 }
 const tds = document.getElementsByTagName('td');
@@ -59,8 +71,7 @@ function startGame() {
         PLAYER_2 = new Player(players.player2, players.player2Symbol);
         MACHINE = 0;
     }
-    // Save localStorage game data
-    saveInitialGame(PLAYER_1, PLAYER_2);
+
     getById('placar-player1-name').innerText = PLAYER_1.name;
     getById('placar-player2-name').innerText = PLAYER_2.name;
 
@@ -102,7 +113,7 @@ function newGame() {
 function updateActualPlayerShow() {
     getById('actual-player-content').innerText = `Agora é a vez de ${ACTUAL_PLAYER.name}`;
 }
-let i = 0;
+
 function playerMark(td) {
     const [line_s, column_s] = td.id.split('');
     const line = parseInt(line_s);
@@ -176,100 +187,80 @@ function resetGame() {
         machineMark(); 
 }
 
+function showWinAlert(winner) {
+    setTimeout(() => {
+      const message = 'Baymax' === winner.name
+        ? "Você perdeu 😒"
+        : `A pessoa jogadora ${winner.name} ganhou 😎`;
+      Swal.fire(message);
+    }, 200);
+  }
+
+function showTieAlert() {
+    setTimeout(() => {
+      Swal.fire("Deu empate 🤣");
+    }, 200);
+}
+
+function updateScore(placarId) {
+    PLACAR[`player${placarId}`]++;
+    updatePlacar();
+}
+
+function handlePlayerWin(winner, loser, placarId, indexToHighlight) {
+    highlight(indexToHighlight);
+    updateScore(placarId);
+    saveHasWinner(winner, loser);
+    showWinAlert(winner);
+}
+  
+function handleTie(player1, player2) {
+    PLACAR.tie++;
+    showTieAlert();
+    saveIsTie(player1, player2);
+    updatePlacar();
+}
+
 function checkEndGame() {
-    let checkedWin = checkWin(PLAYER_1.symbol.symbolId); 
-
-    // const endGameEvent = new CustomEvent('endGameEvent', {
-    //     detail: {
-    //         mensagem: 'A match ended'
-    //     }
-    // });
-
-    // let checked = {
-    //     gameEnded: false,
-    //     win: '', 
-    //     loser: '',
-    //     tie: false, 
-    //     players: [],
-    // };
+    const checkedPlayer1 = checkWin(PLAYER_1.symbol.symbolId);
+    const checkedPlayer2 = checkWin(PLAYER_2.symbol.symbolId);
     
-    if (checkedWin.won) {
-        highlight(checkedWin.index);
-        PLACAR.player1++;
-        updatePlacar();
-        saveDataPlayerWin(PLAYER_1, PLAYER_2);
-        setTimeout(() => {
-            Swal.fire(`A pessoa jogadora ${PLAYER_1.name} ganhou 😎`);
-        }, 200);
+    if (checkedPlayer1.won) {
+        handlePlayerWin(PLAYER_1, PLAYER_2, 1, checkedPlayer1.index);
         return true;
     }
 
-    checkedWin = checkWin(PLAYER_2.symbol.symbolId); 
-    if (checkedWin.won) {
-        highlight(checkedWin.index);
-        PLACAR.player2++;
-        updatePlacar();
-        saveDataPlayerWin(PLAYER_2, PLAYER_1);
-        setTimeout(() => {
-            if (MACHINE == 1)
-                Swal.fire("Você perdeu 😒");
-            else 
-                Swal.fire(`A pessoa jogadora ${PLAYER_2.name} ganhou 😎`);
-        }, 200);
+    if (checkedPlayer2.won) {
+        handlePlayerWin(PLAYER_2, PLAYER_1, 2, checkedPlayer2.index);
         return true;
     }
-        
-    if (checkTie()) {
-        PLACAR.tie++;
-        updatePlacar();
-        saveDataTie(PLAYER_2, PLAYER_1);
-        alert("Deu empate 🤣");
+    
+    const isTie = checkTie();
+    if (isTie) {
+        handleTie(PLAYER_1, PLAYER_2);
         return true;
-    } 
+    }
     return false;
 }
 
-function getIndexPlayerData(playerName, gameData) {
-    const index = gameData.findIndex((p) => {
-        return p.name === playerName;
-    });
-    return index;
+async function saveHasWinner(winner, loser) {
+    // localhost/endgame/save_has_winner?winnerId=1&loserId=3
+    const urlRequest = `${window.location.origin}/endgame/save_has_winner?winnerId=${winner.id}&loserId=${loser.id}`;
+    try {
+        await fetch(urlRequest);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
-function saveDataPlayerWin(playerWin, playerLoser) {
-    const storedGameData = localStorage.getItem(KEY_DATA_GAME);
-    const gameData = JSON.parse(storedGameData);
-
-    indexWin = getIndexPlayerData(playerWin.name, gameData);
-    indexLoser = getIndexPlayerData(playerLoser.name, gameData);
-    console.log(indexLoser, playerLoser);
-    if (indexWin !== (-1)) {
-        gameData[indexWin].wins++;
-        gameData[indexWin].points = (gameData[indexWin].wins * 3) + (gameData[indexWin].ties * 2);
+async function saveIsTie(player1, player2) {
+     // localhost/endgame/save_has_winner?winnerId=1&loserId=3
+    const urlRequest = `${window.location.origin}/endgame/save_is_tie?p1=${player1.id}&p2=${player2.id}`;
+    try {
+        await fetch(urlRequest);
+    } catch (error) {
+        console.error(error);
     }
-    if (indexLoser !== (-1)) {
-        gameData[indexLoser].losses++;
-    }
-    localStorage.setItem(KEY_DATA_GAME, JSON.stringify(gameData));
-}
-
-function saveDataTie(p1, p2) {
-    const storedGameData = localStorage.getItem(KEY_DATA_GAME);
-    const gameData = JSON.parse(storedGameData);
-
-    player1 = getIndexPlayerData(p1.name, gameData);
-    player2 = getIndexPlayerData(p2.name, gameData);
-    if (player1 !== (-1)) {
-        gameData[player1].ties++;
-        gameData[player1].points = (gameData[player1].wins * 3) + (gameData[player1].ties * 2);
-    }
-    if (player2 !== (-1)) {
-        player2.ties++;
-        gameData[player2].points = (gameData[player2].wins * 3) + (gameData[player2].ties * 2);
-    }
-    console.log(gameData);
-    localStorage.setItem(KEY_DATA_GAME, JSON.stringify(gameData));
-
 }
 
 function highlight(index) {
@@ -322,6 +313,15 @@ function checkNamePlayers(players) {
         getById('player2').parentElement.querySelector('.player-name-empty').style.display = 'block';
         return false;
     }
+    if (players.player1 === 'Baymax' || players.player1 === 'Baymax') {
+        Swal.fire({
+            text: 'Não é possível utilizar o nome Baymax 😁',
+            type: 'warning',
+            confirmButtonColor: '#14bdac'
+        });
+        return false;  
+    }
+              
     return true;
 }
 
@@ -414,13 +414,16 @@ function resetNamePlayes() {
     }
 }
 
+// {player1: 'Terry Chris', player2: '', player1Symbol: 'x', player2Symbol: 'o'}
+// Garante a entrada dos nomes dos usuários
+// E define o símbolo
 function getInfoPlayers() {
     const inputs = document.querySelectorAll(".modal-body .infos-input");
     const symbol = document.querySelector('input[name="symbol"]:checked').value;
    
     const values = {};
     for (const input of inputs) {
-      values[input.name] = input.value;
+        values[input.name] = input.value;
     }
     values.player1Symbol = symbol;
     values.player2Symbol = values.player1Symbol === 'x' ? 'o' : 'x';

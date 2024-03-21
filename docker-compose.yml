@@ -1,0 +1,37 @@
+version: "3"
+services:
+  database:
+    image: mariadb:10.1.32
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tictactoe
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./data:/var/lib/mysql"
+    networks:
+      - tictactoe
+      
+  webserver:
+    build: 
+      context: dockerfiles
+      args:
+        - "UID=$UID"
+        - "GID=$GID"
+        - "USER=$USER"
+    ports: 
+      - "80:80"
+    volumes:
+      - ".:/var/www/html"
+    environment:
+      WEB_DOCUMENT_ROOT: "/var/www/html"
+      PATH: "/root/.composer/vendor/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:${PATH}"
+    depends_on:
+      - database
+    networks:
+      - tictactoe      
+
+networks:
+  tictactoe:
+    driver: bridge

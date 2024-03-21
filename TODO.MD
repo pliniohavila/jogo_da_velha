@@ -5,7 +5,8 @@
 [X] Jogador Escolhe entre `X` ou `O`  
 [X] Destacar os quadrados relativos à vitória 
 [X] Placar
-[ ] Remove Event listerner
+[X] Remove Event listerner
+[ ] Impedir usuário de utilizar nome 'Baymax'
 
 // baymax
 Nome do jogador 1: 
@@ -23,6 +24,7 @@ https://sweetalert2.github.io
 [X] Botão para adicionar jogador 
 [X] Opção de símbolo seja gráfica
 [ ] att_input_lis
+[ ] Não incluir Baymax no ranking
 [ ] Ranking dos jogadores
     Deve constar:
         nome do jogador, data da última partida, Quantidade de vitórias, empates e derrotas 
@@ -43,6 +45,25 @@ TIC-TAC-TOE [
     }, 
 ]
 
+
+TABLE GAME_DATA
+
+id: int unsigned auto_increment NOT NULL
+name: varchar NOT NULL
+wins: int NOT NULL DEFAULT 0
+losses: int NOT NULL DEFAULT 0
+ties: int NOT NULL DEFAULT 0
+lastTimePleyed: varchar
+
+
+class Player {
+    constructor(name, symbol) {
+        this.id;
+        this.name = name;
+        this.symbol = symbols[symbol];
+    }
+}
+
 https://www.w3schools.com/tags/att_input_list.asp
 
 Toda vez que um novo é iniciado, recupera os dados do localStorage. 
@@ -57,3 +78,13 @@ Ao final de cada partida os dados do jogador é atualizado no localStorage
 
 Para exibir:
     Recuperar os dados do localStorage, ordenada e relaciona
+
+
+
+Variáveis de ambiente:
+
+https://stackoverflow.com/questions/45852926/how-can-i-add-env-to-codeigniter
+
+Migrations
+
+https://medium.com/@sunfreitas/entendendo-as-migrações-do-codeigniter-3-parte-i-79b1e28a580c
