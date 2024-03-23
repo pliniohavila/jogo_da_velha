@@ -30,9 +30,9 @@ class Player_model extends CI_Model {
         $id = $result[0]->id;   
         if (!empty($result)) 
         {
-            $this->db->set('lastTimePlayed', $last_time_played);
-            $this->db->where('id', $id);
-            $this->db->update('game_data');
+            $this->db->set('lastTimePlayed', $last_time_played)
+                ->where('id', $id)
+                ->update('game_data');
         }
         return $id;
     }

@@ -24,8 +24,8 @@ https://sweetalert2.github.io
 [X] Botão para adicionar jogador 
 [X] Opção de símbolo seja gráfica
 [ ] att_input_lis
-[ ] Não incluir Baymax no ranking
-[ ] Ranking dos jogadores
+[X] Não incluir Baymax no ranking
+[X] Ranking dos jogadores
     Deve constar:
         nome do jogador, data da última partida, Quantidade de vitórias, empates e derrotas 
         Ordenado, por vitória: 3pts, Empates 1pts, Derrota 0pts
